@@ -1,0 +1,43 @@
+#  ---------------------------------------- Queries ------------------------------------------
+
+type Query {
+    fetchBook(id: String!): Book!
+    fetchBooks(authorId: String!): [Book!]
+}
+
+#  ---------------------------------------- Mutations ------------------------------------------
+
+type Mutation {
+    addBook(book: BookDto!): Book
+}
+
+#  ---------------------------------------- Custom Types ------------------------------------------
+
+type Book {
+    id: String!
+    name: String!
+    pageCount: Int
+    author: Author!
+}
+
+type Author {
+    id: String!
+    firstName: String
+    lastName: String
+}
+
+#  ---------------------------------------- Custom Inputs ------------------------------------------
+
+input BookDto {
+    name: String!
+    pageCount: Int
+    author: AuthorDto!
+}
+
+input AuthorDto {
+    id: String!
+    firstName: String
+    lastName: String
+}
+
+#  ----------------------------------------  ------------------------------------------
