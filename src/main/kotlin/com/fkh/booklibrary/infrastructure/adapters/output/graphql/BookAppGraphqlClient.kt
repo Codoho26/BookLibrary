@@ -35,8 +35,8 @@ data class BookAppGraphqlClient(
         .let(::extractResponse)
         .map { it.toDomain() }
 
-    private fun extractResponse(response: Response<FetchBookDto>): Either<BookNotFound, FetchBook> = when  {
-        response.isSuccessful -> response.body()?.data?.right() ?: BookNotFound.left()
+    private fun extractResponse(response: Response<FetchBookResponse>): Either<BookNotFound, FetchBook> = when {
+        response.isSuccessful -> response.body()?.data?.fetchBook?.right() ?: BookNotFound.left()
         response.code() == NOT_FOUND.value() -> BookNotFound.left()
         else -> throw GraphqlCallNonSuccessfulError(
             graphqlClient = BookAppGraphqlClient::class.simpleName!!,
@@ -50,7 +50,7 @@ data class BookAppGraphqlClient(
         name = name,
         author = Author(
             id = AuthorId(UUID.fromString(author.id)),
-            fullName = " ${author.firstName} ${author.lastName}"
+            fullName = "${author.firstName} ${author.lastName}"
         )
     )
 }

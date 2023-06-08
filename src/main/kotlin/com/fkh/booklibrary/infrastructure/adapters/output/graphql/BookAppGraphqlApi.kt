@@ -10,11 +10,15 @@ interface BookAppGraphqlApi {
     @POST("/graphql")
     fun fetchBook(
         @Body body: FetchBookBody
-    ): Call<FetchBookDto>
+    ): Call<FetchBookResponse>
 }
 
+data class FetchBookResponse(
+    val data: FetchBookDto
+)
+
 data class FetchBookDto(
-    val data: FetchBook
+    val fetchBook: FetchBook
 )
 
 data class FetchBookBody(
