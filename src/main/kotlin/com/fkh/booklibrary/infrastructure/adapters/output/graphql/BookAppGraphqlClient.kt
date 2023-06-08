@@ -20,12 +20,6 @@ data class BookAppGraphqlClient(
 ): BookFinder {
 
     override fun find(bookId: BookId): Either<BookNotFound, Book> = bookAppGraphqlApi.fetchBook(
-//        """
-//            {
-//                "query": "${FetchBookQuery.OPERATION_DOCUMENT}",
-//                "variables": { "id": "${bookId.value}" }
-//            }
-//            """
         body = FetchBookBody(
             operationName = FetchBookQuery.OPERATION_NAME,
             variables = FetchBookVariables(id = bookId.value.toString()),
