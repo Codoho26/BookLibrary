@@ -1,0 +1,12 @@
+query FetchBook($id: String!) {
+    fetchBook(id: $id) {
+        id
+        name
+        pageCount
+        author {
+            id
+            firstName
+            lastName
+        }
+    }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "File needed for GraphQlTester",
+  "schemaPath": "src/main/resources/graphql/schema.graphqls",
+  "extensions": {}
+}
