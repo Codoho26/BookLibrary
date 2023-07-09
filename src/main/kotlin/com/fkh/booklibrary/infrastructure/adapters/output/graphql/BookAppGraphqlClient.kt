@@ -3,6 +3,8 @@ package com.fkh.booklibrary.infrastructure.adapters.output.graphql
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.ApolloResponse
 import com.fkh.booklibrary.infrastructure.adapters.output.graphql.model.FetchBookQuery
 import com.fkh.booklibrary.infrastructure.adapters.output.graphql.model.FetchBookQuery.FetchBook
 import com.fkh.booklibrary.model.Author
@@ -12,31 +14,24 @@ import com.fkh.booklibrary.model.BookId
 import com.fkh.booklibrary.model.BookNotFound
 import com.fkh.booklibrary.model.ports.BookFinder
 import java.util.UUID
-import org.springframework.http.HttpStatus.NOT_FOUND
-import retrofit2.Response
 
 data class BookAppGraphqlClient(
-    private val bookAppGraphqlApi: BookAppGraphqlApi,
+    private val bookAppApolloClient: ApolloClient,
 ): BookFinder {
 
-    override fun find(bookId: BookId): Either<BookNotFound, Book> = bookAppGraphqlApi.fetchBook(
-        body = FetchBookBody(
-            operationName = FetchBookQuery.OPERATION_NAME,
-            variables = FetchBookVariables(id = bookId.value.toString()),
-            query = FetchBookQuery.OPERATION_DOCUMENT
-        )
-    ).execute()
-        .let(::extractResponse)
-        .map { it.toDomain() }
+    override suspend fun find(bookId: BookId): Either<BookNotFound, Book> =
+        bookAppApolloClient.query(FetchBookQuery(bookId.value.toString()))
+            .execute()
+            .let(::extractResponse)
+            .map { it.toDomain() }
 
-    private fun extractResponse(response: Response<FetchBookResponse>): Either<BookNotFound, FetchBook> = when {
-        response.isSuccessful -> response.body()?.data?.fetchBook?.right() ?: BookNotFound.left()
-        response.code() == NOT_FOUND.value() -> BookNotFound.left()
-        else -> throw GraphqlCallNonSuccessfulError(
+
+    private fun extractResponse(response: ApolloResponse<FetchBookQuery.Data>): Either<BookNotFound, FetchBook> = when {
+        response.hasErrors() -> throw GraphqlCallNonSuccessfulError(
             graphqlClient = BookAppGraphqlClient::class.simpleName!!,
-            errorBody = response.errorBody()?.charStream()?.readText()?.trimIndent(),
-            status = response.code()
+            errorBody = response.errors.toString()
         )
+        else -> response.data?.fetchBook?.right() ?: BookNotFound.left()
     }
 
     private fun FetchBook.toDomain() = Book(

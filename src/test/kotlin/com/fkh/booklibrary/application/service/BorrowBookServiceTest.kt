@@ -8,6 +8,7 @@ import com.fkh.booklibrary.model.BookId
 import com.fkh.booklibrary.model.BorrowBook
 import com.fkh.booklibrary.model.RequestId
 import com.fkh.booklibrary.model.ports.BookFinder
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import java.util.UUID
@@ -38,7 +39,7 @@ class BorrowBookServiceTest {
             available = true,
             location = "some location"
         )
-        every { bookFinder.find(BookId(UUID.fromString(bookId))) } returns book.right()
+        coEvery {  bookFinder.find(BookId(UUID.fromString(bookId))) } returns book.right()
 
         val result = borrowBookService(bookId)
 

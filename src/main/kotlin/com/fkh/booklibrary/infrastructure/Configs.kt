@@ -1,5 +1,6 @@
 package com.fkh.booklibrary.infrastructure
 
+import com.apollographql.apollo3.ApolloClient
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -27,7 +28,9 @@ class Configs {
     fun bookFinder(
         bookAppGraphqlApi: BookAppGraphqlApi
     ): BookFinder = BookAppGraphqlClient(
-        bookAppGraphqlApi = bookAppGraphqlApi
+        bookAppApolloClient = ApolloClient.Builder()
+            .serverUrl("http://localhost:8080/graphql")
+            .build()
     )
 
     @Bean
@@ -40,9 +43,10 @@ class Configs {
 
     @Bean
     fun bookAppGraphqlClient(
-        bookAppGraphqlApi: BookAppGraphqlApi
     ) = BookAppGraphqlClient(
-        bookAppGraphqlApi = bookAppGraphqlApi
+        bookAppApolloClient = ApolloClient.Builder()
+            .serverUrl("http://localhost:8080/graphql")
+            .build()
     )
 
     @Bean
