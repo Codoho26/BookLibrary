@@ -8,30 +8,15 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fkh.booklibrary.application.service.BorrowBookService
-import com.fkh.booklibrary.infrastructure.adapters.output.graphql.BookAppGraphqlApi
 import com.fkh.booklibrary.infrastructure.adapters.output.graphql.BookAppGraphqlClient
 import com.fkh.booklibrary.model.ports.BookFinder
-import java.util.UUID
-import java.util.concurrent.TimeUnit
-import okhttp3.OkHttpClient
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
+import java.util.*
 
 @Configuration
 class Configs {
-
-    @Bean
-    fun bookFinder(
-        bookAppGraphqlApi: BookAppGraphqlApi
-    ): BookFinder = BookAppGraphqlClient(
-        bookAppApolloClient = ApolloClient.Builder()
-            .serverUrl("http://localhost:8080/graphql")
-            .build()
-    )
 
     @Bean
     fun borrowBookService(
@@ -60,24 +45,4 @@ class Configs {
         .registerModules(JavaTimeModule())
         .findAndRegisterModules()
 
-    @Bean
-    fun bookAppGraphqlApi(
-        jsonMapper: ObjectMapper,
-        @Value("\${client.bookapp-api.base-url}") baseUrl: String,
-        @Value("\${client.bookapp-api.connection-timeout}") connectionTimeOut: Long,
-        @Value("\${client.bookapp-api.call-timeout}") callTimeOut: Long,
-        @Value("\${client.bookapp-api.read-timeout}") readTimeOut: Long,
-    ): BookAppGraphqlApi =
-        Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(JacksonConverterFactory.create(jsonMapper))
-            .client(
-                OkHttpClient.Builder()
-                    .callTimeout(callTimeOut, TimeUnit.MILLISECONDS)
-                    .connectTimeout(connectionTimeOut, TimeUnit.MILLISECONDS)
-                    .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
-                    .build()
-            )
-            .build()
-            .create(BookAppGraphqlApi::class.java)
 }
