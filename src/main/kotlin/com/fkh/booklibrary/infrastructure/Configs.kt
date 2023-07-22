@@ -10,10 +10,10 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fkh.booklibrary.application.service.BorrowBookService
 import com.fkh.booklibrary.infrastructure.adapters.output.graphql.BookAppGraphqlClient
 import com.fkh.booklibrary.model.ports.BookFinder
+import java.util.UUID
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
-import java.util.*
 
 @Configuration
 class Configs {
