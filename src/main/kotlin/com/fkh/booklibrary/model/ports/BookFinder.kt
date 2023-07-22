@@ -7,5 +7,5 @@ import com.fkh.booklibrary.model.BookNotFound
 
 interface BookFinder {
 
-    fun find(bookId: BookId): Either<BookNotFound, Book>
+    suspend fun find(bookId: BookId): Either<BookNotFound, Book>
 }

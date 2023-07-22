@@ -34,6 +34,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.github.tomakehurst:wiremock:3.0.0-beta-5")
+    testImplementation("com.apollographql.apollo3:apollo-testing-support:4.0.0-alpha.1")
 }
 
 tasks.test {
@@ -42,10 +43,6 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
-}
-
-application {
-    mainClass.set("MainKt")
 }
 
 apollo {
