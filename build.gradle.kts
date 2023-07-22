@@ -45,10 +45,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
 }
 
-application {
-    mainClass.set("MainKt")
-}
-
 apollo {
     service("booklibrary") {
         packageName.set("com.fkh.booklibrary.infrastructure.adapters.output.graphql.model")

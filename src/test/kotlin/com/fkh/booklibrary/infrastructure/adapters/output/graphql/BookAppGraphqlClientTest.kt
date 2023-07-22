@@ -2,6 +2,7 @@ package com.fkh.booklibrary.infrastructure.adapters.output.graphql
 
 import arrow.core.right
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.annotations.ApolloExperimental
 import com.apollographql.apollo3.testing.QueueTestNetworkTransport
 import com.apollographql.apollo3.testing.enqueueTestResponse
 import com.fkh.booklibrary.infrastructure.Configs
@@ -45,6 +46,7 @@ class BookAppGraphqlClientTest {
         )
     }
 
+    @OptIn(ApolloExperimental::class)
     private val apolloClient = ApolloClient.Builder()
         .networkTransport(QueueTestNetworkTransport())
         .build()
@@ -54,9 +56,7 @@ class BookAppGraphqlClientTest {
             )
         }
 
-    private val bookAppGraphqlClient = BookAppGraphqlClient(
-        apolloClient
-    )
+    private val bookAppGraphqlClient = BookAppGraphqlClient(apolloClient)
 
     @Test
     fun `should fetch book from BookApp graphql client`() {
