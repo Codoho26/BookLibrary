@@ -12,7 +12,7 @@ with ID "f0249d34-945c-4b8d-9e68-6bafb6fae7e0" can be borrowed. The complete CRU
 The project is developed using **Hexagonal** architecture (see
 e.g. [here](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software))).
 
-<img src="docs/assets/Hexagonal-book-library.png" alt="Hexagonal Architecture" style="width:400px;"/>
+<img src="docs/assets/Hexagonal-book-library.png" alt="Hexagonal Architecture" style="width:800px;"/>
 
 In such simple projects, one might consider using a **technically driven** layered architecture, instead of a
 **domain driven** (Hexagonal) architecture. However, the Hexagonal structuring of the code here comes for no additional
